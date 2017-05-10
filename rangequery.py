@@ -30,6 +30,8 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
     timespan=dict(T1=None,T2=None)
     max_pointings=10
 
+    allow_alias=True
+
     def main(self):
         scw_index=fits.open(os.environ['INTEGRAL_DATA']+"/idx/scw/GNRL-SCWG-GRP-IDX.fits")[1].data
 
@@ -60,4 +62,4 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
         print("selection:",selection)
 
-        return [ddosa.ScWData(input_scwid=scwid+".001") for scwid in selection]
+        self.scwlistdata=[ddosa.ScWData(input_scwid=scwid+".001") for scwid in selection]
