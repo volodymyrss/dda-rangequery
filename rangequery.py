@@ -59,11 +59,21 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
         print("for time",t1_ijd,t2_ijd,"found",sum(m_coord & m_avail & m_time), "total range was",t1.min(),t2.max(),"(",(t2.max()-t1.min())/365,"years)")
             
-        selection=scw_index['SWID'][m_coord & m_avail & m_time]
+        pre_selection=scw_index['SWID'][m_coord & m_avail & m_time]
+        selection=[]
 
-        if self.max_pointings is not None:
-            print("choosing only first",self.max_pointings)
-            selection=selection[:self.max_pointings]
+        for scwid in pre_selection:
+            evtsfn=os.environ['INTEGRAL_DATA']+"/scw/%s/%s.001/isgri_events.fits.gz"%(scwid[:4],scwid)
+            print("searching for",evtsfn)
+            if not os.path.exists(evtsfn):
+                print("skipping",scwid)
+                continue
+
+            selection.append(scwid)
+
+            if self.max_pointings is not None and len(selection)>=self.max_pointings:
+                print("choosing only first",self.max_pointings)
+                break
 
         print("selection:",selection)
 
