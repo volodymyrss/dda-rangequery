@@ -32,6 +32,11 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
     allow_alias=True
 
+    def get_version(self):
+        v=self.get_signature()+"."+self.version
+        v+="c_%(RA).5lg_%(DEC).5lg_%(radius).5lg.t_%(T1)s_%(T2)s"%(dict(self.coordinates.items()+self.timespan.items()))
+        return v
+
     def main(self):
         scw_index=fits.open(os.environ['INTEGRAL_DATA']+"/idx/scw/GNRL-SCWG-GRP-IDX.fits")[1].data
 
