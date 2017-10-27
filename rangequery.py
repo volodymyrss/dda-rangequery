@@ -34,11 +34,19 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
     def get_version(self):
         v=self.get_signature()+"."+self.version
-        v+="c_%(RA).5lg_%(DEC).5lg_%(radius).5lg.t_%(T1)s_%(T2)s_maxpoint%(max_pointings)i"%(
+
+        try:
+            v+="c_%(RA).5lg_%(DEC).5lg_%(radius).5lg.t_%(T1)s_%(T2)s_maxpoint%(max_pointings)i"%(
                             dict(self.coordinates.items()+ \
                                  self.timespan.items()+ \
                                  dict(max_pointings=(self.max_pointings if self.max_pointings is not None else 1000)).items())
                         )
+        except Exception:
+            print("failed coordinates",self.coordinates)
+            print("failed timespan", self.timespan)
+            print("failed max_pointings", self.max_pointings)
+            raise
+
         return v
 
     def main(self):
