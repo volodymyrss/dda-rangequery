@@ -45,7 +45,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
             print("failed coordinates",self.coordinates)
             print("failed timespan", self.timespan)
             print("failed max_pointings", self.max_pointings)
-            raise
+            v+=".UNSET"
 
         return v
 
