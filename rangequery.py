@@ -37,7 +37,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
         v+="c_%(RA).5lg_%(DEC).5lg_%(radius).5lg.t_%(T1)s_%(T2)s_maxpoint%(max_pointings)i"%(
                             dict(self.coordinates.items()+ \
                                  self.timespan.items()+ \
-                                 dict(max_pointings=self.max_pointings).items())
+                                 dict(max_pointings=(self.max_pointings if self.max_pointings is not None else 1000)).items())
                         )
         return v
 
