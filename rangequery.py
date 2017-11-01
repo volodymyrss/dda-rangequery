@@ -90,3 +90,11 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
         print("selection:",selection)
 
         self.scwlistdata=[ddosa.ScWData(input_scwid=scwid+".001") for scwid in selection]
+
+class ReportScWList(ddosa.DataAnalysis):
+    input_scwlist=TimeDirectionScWList
+
+    cached=True
+
+    def main(self):
+        self.scwidlist=[scw.input_scwid.str() for scw in self.input_scwlist.scwlistdata]
