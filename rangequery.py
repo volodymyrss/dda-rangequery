@@ -72,7 +72,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
             print("instructed to use CONS")
             return self.scw_data_nrt()
 
-        if self.scw_version=="any":
+        if self.scwversion=="any":
             if len(scw_cons)>0: # pick overlaps
                 print("instructed to use ANY, and CONS is GOOD")
                 return scw_cons
