@@ -64,7 +64,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
     def main(self):
         scw_cons=self.scw_data_cons()
-        if self.scwversion=="001"
+        if self.scwversion=="001":
             print("instructed to use CONS")
             return scw_cons
         
