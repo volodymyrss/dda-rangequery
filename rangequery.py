@@ -66,19 +66,24 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
         scw_cons=self.scw_data_cons()
         if self.scwversion=="001":
             print("instructed to use CONS")
-            return scw_cons
+            self.scwlistdata=scw_cons
+            return
         
         if self.scwversion=="000":
             print("instructed to use CONS")
-            return self.scw_data_nrt()
+            self.scwlistdata=self.scw_data_nrt()
+            return
 
         if self.scwversion=="any":
             if len(scw_cons)>0: # pick overlaps
                 print("instructed to use ANY, and CONS is GOOD")
-                return scw_cons
+                self.scwlistdata=scw_cons
+                return
             else:
                 print("instructed to use ANY, and CONS is empty")
-                return self.scw_data_nrt()
+                self.scwlistdata=self.scw_data_nrt()
+                return
+
 
             
 
@@ -120,7 +125,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
         print("selection:",selection)
 
-        self.scwlistdata=[ddosa.ScWData(input_scwid=scwid+".001") for scwid in selection]
+        return [ddosa.ScWData(input_scwid=scwid+".001") for scwid in selection]
 
 class ReportScWList(ddosa.DataAnalysis):
     input_scwlist=TimeDirectionScWList
