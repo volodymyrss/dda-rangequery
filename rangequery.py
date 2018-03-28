@@ -32,6 +32,8 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
     allow_alias=True
 
+    scwversion="any"
+
     def get_version(self):
         v=self.get_signature()+"."+self.version
 
@@ -47,11 +49,40 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
             print("failed max_pointings", self.max_pointings)
             v+=".UNSET" # TODO make it generic
 
+        if self.scwversion!="any":
+            v+=".scwversion."+self.scwversion
+
         return v
 
-    def main(self):
+    def scw_data_cons(self):
         scw_index=fits.open(os.environ['INTEGRAL_DATA']+"/idx/scw/GNRL-SCWG-GRP-IDX.fits")[1].data
+        return self.extract_from_index(scw_index)
 
+    def scw_data_nrt(self):
+        scw_index=fits.open(sorted(glob.glob(os.environ['REP_BASE_PROD_NRT']+"/idx/scw/GNRL-SCWG-GRP-IDX_*"))[-1])[1].data
+        return self.extract_from_index(scw_index)
+
+    def main(self):
+        scw_cons=self.scw_data_cons()
+        if self.scwversion=="001"
+            print("instructed to use CONS")
+            return scw_cons
+        
+        if self.scwversion=="000":
+            print("instructed to use CONS")
+            return self.scw_data_nrt()
+
+        if self.scw_version=="any":
+            if len(scw_cons)>0: # pick overlaps
+                print("instructed to use ANY, and CONS is GOOD")
+                return scw_cons
+            else:
+                print("instructed to use ANY, and CONS is empty")
+                return self.scw_data_nrt()
+
+            
+
+    def extract_from_index(self,scw_index):
         scx=SkyCoord(scw_index['RA_SCX'],scw_index['DEC_SCX'],unit="deg")
 
         target=SkyCoord(self.coordinates['RA'],self.coordinates['DEC'],unit="deg")
