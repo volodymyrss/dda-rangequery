@@ -126,7 +126,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
         print("selection:",selection)
 
-        return [ddosa.ScWData(input_scwid=scwid+".001") for scwid in selection]
+        return [ddosa.ScWData(input_scwid=scwid+"."+scwversion) for scwid in selection]
 
 class ReportScWList(ddosa.DataAnalysis):
     input_scwlist=TimeDirectionScWList
