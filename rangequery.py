@@ -61,7 +61,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
     def scw_data_nrt(self):
         scw_index=fits.open(sorted(glob.glob(os.environ['REP_BASE_PROD_NRT']+"/idx/scw/GNRL-SCWG-GRP-IDX_*"))[-1])[1].data
-        return self.extract_from_index(scw_index)
+        return self.extract_from_index(scw_index,rep_base_prod=glob.glob(os.environ['REP_BASE_PROD_NRT'],scwversion="000")
 
     def main(self):
         scw_cons=self.scw_data_cons()
@@ -88,7 +88,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
             
 
-    def extract_from_index(self,scw_index):
+    def extract_from_index(self,scw_index,rep_base_prod=os.environ['INTEGRAL_DATA'],scwversion="001"):
         scx=SkyCoord(scw_index['RA_SCX'],scw_index['DEC_SCX'],unit="deg")
 
         target=SkyCoord(self.coordinates['RA'],self.coordinates['DEC'],unit="deg")
@@ -112,7 +112,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
         selection=[]
 
         for scwid in pre_selection:
-            evtsfn=os.environ['INTEGRAL_DATA']+"/scw/%s/%s.001/isgri_events.fits.gz"%(scwid[:4],scwid)
+            evtsfn=rep_base_prod+"/scw/%s/%s.%s/isgri_events.fits.gz"%(scwid[:4],scwid,scwversion)
             print("searching for",evtsfn)
             if not os.path.exists(evtsfn):
                 print("skipping",scwid)
