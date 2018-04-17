@@ -115,24 +115,23 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
         pre_selection=scw_index['SWID'][m_coord & m_avail & m_time]
         selection=[]
 
-        for scwid in pre_selection:
-            evtsfn=rep_base_prod+"/scw/%s/%s.%s/isgri_events.fits.gz"%(scwid[:4],scwid,scwversion)
-            print("searching for",evtsfn)
-            if not os.path.exists(evtsfn):
-                print("skipping",scwid)
-                continue
+        if not self.randomize_pick:
+            for scwid in pre_selection:
+                evtsfn=rep_base_prod+"/scw/%s/%s.%s/isgri_events.fits.gz"%(scwid[:4],scwid,scwversion)
+                print("searching for",evtsfn)
+                if not os.path.exists(evtsfn):
+                    print("skipping",scwid)
+                    continue
 
-            selection.append(scwid)
+                selection.append(scwid)
 
-            if not self.randomize_pick:
                 if self.max_pointings is not None and len(selection)>=self.max_pointings:
                     print("choosing only first",self.max_pointings)
                     break
-            
-        if self.randomize_pick:
-            pick_size=min(self.max_pointings,len(selection))
+        else:
+            pick_size=min(self.max_pointings,len(pre_selection))
             print("choosing only random",pick_size)
-            selection=sorted(random.sample(selection,pick_size))
+            selection=sorted(random.sample(pre_selection,pick_size))
 
         print("selection:",selection)
 
