@@ -30,6 +30,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
     coordinates=dict(RA=None,DEC=None,radius=None)
     timespan=dict(T1=None,T2=None)
     max_pointings=10
+    randomize_pick=True
 
     allow_alias=True
 
@@ -49,6 +50,9 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
             print("failed timespan", self.timespan)
             print("failed max_pointings", self.max_pointings)
             v+=".UNSET" # TODO make it generic
+
+        if self.randomize_pick:
+            v+=".randompick"
 
         if self.scwversion!="any":
             v+=".scwversion."+self.scwversion
@@ -120,9 +124,15 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
             selection.append(scwid)
 
-            if self.max_pointings is not None and len(selection)>=self.max_pointings:
-                print("choosing only first",self.max_pointings)
-                break
+            if not self.randomize_pick:
+                if self.max_pointings is not None and len(selection)>=self.max_pointings:
+                    print("choosing only first",self.max_pointings)
+                    break
+            
+        if self.randomize_pick:
+            pick_size=min(self.max_pointings,len(selection))
+            print("choosing only random",pick_size)
+            selection=sorted(random.sample(selection,pick_size))
 
         print("selection:",selection)
 
