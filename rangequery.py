@@ -132,6 +132,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
         else:
             pick_size=min(self.max_pointings,len(pre_selection))
             print("choosing only random",pick_size)
+            random.seed(0)
             selection=sorted(random.sample(pre_selection,pick_size))
 
         print("selection:",selection)
