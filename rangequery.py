@@ -6,6 +6,7 @@ import ddosa
 import os
 import re
 import glob
+import random            
 
 import astropy.io.fits as fits
 from astropy.coordinates import SkyCoord
