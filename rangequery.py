@@ -46,17 +46,26 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
                                  self.timespan.items()+ \
                                  dict(max_pointings=(self.max_pointings if self.max_pointings is not None else 1000)).items())
                         )
+            v+="..."+self.timespan['T1'][:4]
+            if self.timespan['T1'][:4]!=self.timespan['T2'][:4]:
+                v+="_"+self.timespan['T2'][:4]
+            else:
+                v+="..."+self.timespan['T1'][5:7]
+                if self.timespan['T1'][5:7]!=self.timespan['T2'][5:7]:
+                    v+="_"+self.timespan['T2'][5:7]
+
         except Exception:
             print("failed coordinates",self.coordinates)
             print("failed timespan", self.timespan)
             print("failed max_pointings", self.max_pointings)
             v+=".UNSET" # TODO make it generic
 
+
         if self.randomize_pick:
-            v+=".randompick"
+            v+="...randompick"
 
         if self.scwversion!="any":
-            v+=".scwversion."+self.scwversion
+            v+="...scwversion."+self.scwversion
 
         return v
 
