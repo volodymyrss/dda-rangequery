@@ -37,6 +37,8 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
     allow_alias=True
 
+    version="v1"
+
     scwversion="any"
 
     def get_version(self):
