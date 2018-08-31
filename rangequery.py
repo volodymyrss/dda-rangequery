@@ -4,6 +4,8 @@ import dataanalysis as da
 import ddosa
 
 import os
+from os import access, R_OK
+from os.path import isfile
 import re
 import glob
 import random            
@@ -131,6 +133,10 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
                 print("searching for",evtsfn)
                 if not os.path.exists(evtsfn):
                     print("skipping",scwid)
+                    continue
+
+                if not isfile(evtsfn) or not access(evtsfn, R_OK):
+                    print("File {} doesn't exist or isn't readable".format(evtsfn))
                     continue
 
                 selection.append(scwid)
