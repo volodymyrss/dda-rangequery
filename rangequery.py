@@ -37,7 +37,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
     allow_alias=True
 
-    version="v1"
+    version="v1.1"
 
     scwversion="any"
 
