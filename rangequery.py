@@ -39,7 +39,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
     version="v1.1"
 
-    scwversion="any"
+    scwversion="latest"
 
     def get_version(self):
         v=self.get_signature()+"."+self.version
@@ -73,13 +73,43 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
         return v
 
-    def scw_data_cons(self):
-        scw_index=fits.open(os.environ['INTEGRAL_DATA']+"/idx/scw/GNRL-SCWG-GRP-IDX.fits")[1].data
+
+    def latest_index(self, rbp):
+        index_fn = sorted(glob.glob(rbp+"/idx/scw/GNRL-SCWG-GRP-IDX_*"))[-1]
+
+        index_version = re.search("/GNRL-SCWG-GRP-IDX_(.*?).fits(.gz)?", index_fn).groups()[1]
+
+        print("searching for latest index in", rbp)
+        print("found latest index", index_fn, index_version)
+
+        return index_fn, index_version
+
+    def scw_data(self, rbp, scwversion):
+        index_fn, index_version = self.latest_index(rbp)
+
+
+        scw_index = fits.open(index_fn)[1].data
+
         return self.extract_from_index(scw_index)
 
+    def scw_data_cons(self):
+        return self.scw_data(os.environ['INTEGRAL_DATA'], "001")
+
     def scw_data_nrt(self):
-        scw_index=fits.open(sorted(glob.glob(os.environ['REP_BASE_PROD_NRT']+"/idx/scw/GNRL-SCWG-GRP-IDX_*"))[-1])[1].data
-        return self.extract_from_index(scw_index,rep_base_prod=os.environ['REP_BASE_PROD_NRT'],scwversion="000")
+        return self.scw_data(os.environ['REP_BASE_PROD_NRT'], "000")
+    
+    def scw_data_latest(self):
+        nrt_index_fn, nrt_index_version = self.latest_index(os.environ['REP_BASE_PROD_NRT'])
+        cons_index_fn, cons_index_version = self.latest_index(os.environ['INTEGRAL_DATA'])
+
+        nrt_scw_index = fits.open(nrt_index_fn)[1].data
+        cons_scw_index = fits.open(cons_index_fn)[1].data
+
+        print()
+
+        raise Exception()
+
+        #return self.scw_data(, "latest")
 
     def main(self):
         scw_cons=self.scw_data_cons()
@@ -102,6 +132,10 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
                 print("instructed to use ANY, and CONS is empty")
                 self.scwlistdata=self.scw_data_nrt()
                 return
+        
+        if self.scwversion=="latest":
+            self.scwlistdata=self.scw_data_latest()
+
 
 
             
@@ -112,6 +146,8 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
         target=SkyCoord(self.coordinates['RA'],self.coordinates['DEC'],unit="deg")
 
         m_avail=scw_index['SW_TYPE']=="POINTING"
+
+        print(scw_index)
 
         m_coord=scx.separation(target).deg<self.coordinates['radius']
 
