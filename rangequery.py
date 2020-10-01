@@ -149,7 +149,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
             pick_size=min(self.max_pointings,len(pre_selection))
             print("choosing only random",pick_size)
             random.seed(0)
-            pre_selection=sorted(random.sample(pre_selection,pick_size))
+            pre_selection=sorted(random.sample(list(pre_selection), pick_size))
             
             for scwid in pre_selection:
                 evtsfn=rep_base_prod+"/scw/%s/%s.%s/isgri_events.fits.gz"%(scwid[:4],scwid,scwversion)
