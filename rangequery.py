@@ -46,7 +46,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
 
         try:
             v+="c_%(RA).5lg_%(DEC).5lg_%(radius).5lg.t_%(T1)s_%(T2)s_maxpoint%(max_pointings)i"% {
-                           **self.coordinates, **self.timespan.items(),
+                           **self.coordinates, **self.timespan,
                           'max_pointings': (self.max_pointings if self.max_pointings is not None else 1000)
                          }
             v+="..."+self.timespan['T1'][:4]
