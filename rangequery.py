@@ -29,6 +29,9 @@ def converttime(informat,intime,outformat):
     else:
         return c[outformat]
 
+class ImpossibleScWSelection(ddosa.AnalysisException):
+    pass
+
 class TimeDirectionScWList(ddosa.DataAnalysis):
     coordinates=dict(RA=None,DEC=None,radius=None)
     timespan=dict(T1=None,T2=None)
@@ -149,6 +152,10 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
             pick_size=min(self.max_pointings,len(pre_selection))
             print("choosing only random",pick_size)
             random.seed(0)
+
+            if pick_size < len(list(pre_selection)):
+                raise ImpossibleScWSelection(f"pick_size {pick_size} < len(selection): {len(list(pre_selection)}")
+
             pre_selection=sorted(random.sample(list(pre_selection), pick_size))
             
             for scwid in pre_selection:
