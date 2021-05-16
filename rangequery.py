@@ -153,8 +153,11 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
             print("choosing only random",pick_size)
             random.seed(0)
 
-            if pick_size < len(list(pre_selection)):
-                raise ImpossibleScWSelection(f"pick_size {pick_size} < len(selection): {len(list(pre_selection))}")
+            if pick_size > len(list(pre_selection)):
+                raise ImpossibleScWSelection(f"pick_size {pick_size} > len(selection): {len(list(pre_selection))}")
+
+            if pick_size <= 0:
+                raise ImpossibleScWSelection(f"pick_size {pick_size} <= 0")
 
             pre_selection=sorted(random.sample(list(pre_selection), pick_size))
             
