@@ -29,7 +29,7 @@ def converttime(informat,intime,outformat):
     else:
         return c[outformat]
 
-class ImpossibleScWSelection(ddosa.AnalysisException):
+class ImpossibleScWSelection(da.AnalysisException):
     pass
 
 class TimeDirectionScWList(ddosa.DataAnalysis):
