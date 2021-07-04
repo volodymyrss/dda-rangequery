@@ -76,7 +76,8 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
         return v
 
     def scw_data_cons(self):
-        scw_index=fits.open(os.environ['INTEGRAL_DATA']+"/idx/scw/GNRL-SCWG-GRP-IDX.fits")[1].data
+        #scw_index=fits.open(os.environ['INTEGRAL_DATA']+"/idx/scw/GNRL-SCWG-GRP-IDX.fits")[1].data
+        scw_index=fits.open(sorted(glob.glob(os.environ['INTEGRAL_DATA']+"/idx/scw/GNRL-SCWG-GRP-IDX_*"))[-1])[1].data
         return self.extract_from_index(scw_index)
 
     def scw_data_nrt(self):
