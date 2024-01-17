@@ -112,7 +112,11 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
     def extract_from_index(self,scw_index,rep_base_prod=os.environ['INTEGRAL_DATA'],scwversion="001"):
         scx=SkyCoord(scw_index['RA_SCX'],scw_index['DEC_SCX'],unit="deg")
 
-        target=SkyCoord(self.coordinates['RA'],self.coordinates['DEC'],unit="deg")
+        try:
+            target = SkyCoord(self.coordinates['RA'],self.coordinates['DEC'],unit="deg")
+        except Exception as e:
+            print("failed to interpret coordinates",self.coordinates)
+            raise ImpossibleScWSelection("failed to interpret coordinates: "+str(e))
 
         m_avail=scw_index['SW_TYPE']=="POINTING"
 
