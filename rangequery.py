@@ -61,7 +61,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
                     v+="_"+self.timespan['T2'][5:7]
 
         except Exception:
-            print("failed coordinates",self.coordinates)
+            # print("failed coordinates",self.coordinates)
             print("failed timespan", self.timespan)
             print("failed max_pointings", self.max_pointings)
             v+=".UNSET" # TODO make it generic
@@ -115,7 +115,7 @@ class TimeDirectionScWList(ddosa.DataAnalysis):
         try:
             target = SkyCoord(self.coordinates['RA'],self.coordinates['DEC'],unit="deg")
         except Exception as e:
-            print("failed to interpret coordinates",self.coordinates)
+            # print("failed to interpret coordinates",self.coordinates)
             raise ImpossibleScWSelection("failed to interpret coordinates: "+str(e))
 
         m_avail=scw_index['SW_TYPE']=="POINTING"
